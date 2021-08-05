@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title><%=title%></title>
+		<meta name="generator" content="Bootply" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
+		<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+        <link href="/css/signup.css" rel="stylesheet">
+    
+</head>
+<body>
+
+    <header class="navbar navbar-bright navbar-fixed-top" role="banner">
+        <div class="container">
+          <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">Home</a>
+          </div>
+          <nav class="collapse navbar-collapse" role="navigation">
+            <ul class="nav navbar-nav">
+              <%for(i=0;i<nav.length;i++){%>
+              <li>
+                <a href="<%=nav[i].link%>"><%=nav[i].name%></a>
+              </li>
+              <%}%>
+            </ul>
+            <ul class="nav navbar-right navbar-nav">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-search"></i></a>
+                <ul class="dropdown-menu" style="padding:12px;">
+                  <form class="form-inline">
+                    <button type="submit" class="btn btn-default pull-right"><i class="glyphicon glyphicon-search"></i></button><input type="text" class="form-control pull-left" placeholder="Search">
+                  </form>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+   
+  <div class="container2">
+    <div class="title">Sign Up</div>
+    
+    <div class="content">
+      <form action="/signin" name="myForm" onsubmit="return validate()">
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">Full Name</span>
+            <input type="text" placeholder="Enter your name" required autofocus>
+          </div>
+          <div class="input-box">
+            <span class="details">Username</span>
+            <input type="text" placeholder="Enter your username" required pattern=".*\S.*">
+          </div>
+          <div class="input-box">
+            <span class="details">Email</span>
+            <input type="text" placeholder="Enter your email" id="email" oninput="validate()" on>
+             <label for="error" id="error"></label> 
+          </div>
+          <div class="input-box">
+            <span class="details">Phone Number</span>
+            <input type="text" placeholder="your 10 digit phone number" id="phone" oninput="inputNumber()" required >
+            <label for="number" id="number"></label>
+          </div>
+          <div class="input-box">
+            <span class="details">Password</span>
+            <input type="password" placeholder="Enter your password" id="password" oninput="strengthChecker()" required>
+            <div id="strength-bar"></div>
+            <p id="msg"></p>
+          </div>
+          <div class="input-box">
+            <span class="details">Confirm Password</span>
+            <input type="password" placeholder="Confirm your password" id="pswd" onkeyup="check()" required>
+            <label for="pwd" id="pwd"></label>
+          </div>
+        </div>
+        <div class="button" id="submit">
+          <input type="submit" value="Sign Up">
+        </div>
+        
+      </form>
+    </div>
+  </div>
+  <script>
+      
+let phone_number = document.getElementById("phone");
+let email = document.getElementById("email");
+let error = document.getElementById("error");
+let number = document.getElementById("number");
+let pwd = document.getElementById("pwd");
+function validate(){
+    
+     let regexp = /^([A-Za-z0-9\.-]+)@([A-Za-z0-9\-]+).([a-z]{2,3})(.[a-z]{2,3}?)$/;
+     if (regexp.test(email.value)){
+         error.innerHTML = "valid";
+         error.style.color = "green";
+         email.style.border = "3px solid green";
+     }
+     else{
+         error.innerHTML = "Please enter a valid email id";
+         error.style.color = "red";
+         email.style.border = "3px solid red";
+         return false;
+     }
+
+}
+function inputNumber() {
+    let exp =  /^[7-9](\d{2})[-. ]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?$/;
+    if (exp.test(phone.value)){
+        number.innerHTML = "valid";
+        number.style.color = "green";
+        phone.style.border = "3px solid green";
+    }
+    else{
+        number.innerHTML = "Please enter a valid phone number";
+        number.style.color = "red";
+        phone.style.border = "3px solid red";
+        return false;
+    }
+}
+let parameters = {
+    capitals: false,
+    count : false,
+    letters : false,
+    numbers : false,
+    special : false
+}
+let strengthBar = document.getElementById("strength-bar");
+let msg = document.getElementById("msg");
+
+function strengthChecker(){
+    let password = document.getElementById("password").value;
+
+
+    parameters.capitals = (/[A-Z]+/.test(password))?true:false;
+    parameters.letters = (/[A-Za-z]+/.test(password))?true:false;
+    parameters.numbers = (/[0-9]+/.test(password))?true:false;
+    parameters.special = (/[!\"$%&/()=?@~`\\.\';:+=^*_-]+/.test(password))?true:false;
+    parameters.count = (password.length > 16)?true:false;
+
+    let barLength = Object.values(parameters).filter(value=>value);
+
+    console.log(Object.values(parameters), barLength);
+
+    strengthBar.innerHTML = "";
+    for( let i in barLength){
+        let span = document.createElement("span");
+        span.classList.add("strength");
+        strengthBar.appendChild(span);
+    }
+
+    let spanRef = document.getElementsByClassName("strength");
+    for( let i = 0; i < spanRef.length; i++){
+        switch(spanRef.length - 1){
+            case 0 :
+                spanRef[i].style.background = "#ff3e36";
+                msg.textContent = "Your password is very weak";
+                break;
+            case 1:
+                spanRef[i].style.background = "#ff691f";
+                msg.textContent = "Your password is weak";
+                break;
+            case 2:
+                spanRef[i].style.background = "#ffda36";
+                msg.textContent = "Your password is good";
+                break;
+            case 3:
+                spanRef[i].style.background = "#0be881";
+                msg.textContent = "Your password is strong";
+                break;
+        }
+    }
+}
+
+let password = document.getElementById("password").value;
+let password2 = document.getElementById("pswd").value;
+
+var check = function() {
+    if (document.getElementById('password').value ==
+      document.getElementById('pswd').value) {
+      document.getElementById('pwd').innerHTML = 'Password Confirmed';
+      document.getElementById('pwd').style.color = 'green';
+    } else {
+      document.getElementById('pwd').style.color = 'red';
+      document.getElementById('pwd').innerHTML = 'Password does not match';
+      return false;
+    }
+  }
+  </script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+  <script src="//js/bootstrap.min.js"></script>
+</body>
+</html>

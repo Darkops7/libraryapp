@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title><%=title%></title>
+		<meta name="generator" content="Bootply" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
+		<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+        <link href="/css/signin.css" rel="stylesheet">
+    
+</head>
+<body>
+
+    <header class="navbar navbar-bright navbar-fixed-top" role="banner">
+        <div class="container">
+          <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">Home</a>
+          </div>
+          <nav class="collapse navbar-collapse" role="navigation">
+            <ul class="nav navbar-nav">
+              <%for(i=0;i<nav.length;i++){%>
+              <li>
+                <a href="<%=nav[i].link%>"><%=nav[i].name%></a>
+              </li>
+              <%}%>
+            </ul>
+            <ul class="nav navbar-right navbar-nav">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-search"></i></a>
+                <ul class="dropdown-menu" style="padding:12px;">
+                  <form class="form-inline">
+                    <button type="submit" class="btn btn-default pull-right"><i class="glyphicon glyphicon-search"></i></button><input type="text" class="form-control pull-left" placeholder="Search">
+                  </form>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+   
+      <div class="container2">
+          <div class="title">Log In</div>
+          
+          <div class="content">
+            <form action="/books" name="myForm">
+              <div class="user-details">
+                
+                <div class="input-box">
+                  <span class="details">Username</span>
+                  <input type="text" placeholder="Enter your username" id="user"  required>
+                </div>
+                
+                
+                <div class="input-box">
+                  <span class="details">Password</span>
+                  <input type="password" placeholder="Enter your password" id="password"  required>
+                </div>
+                
+              </div>
+              <div class="button" id="submit">
+                <input type="submit" value="Log In">
+              </div>
+             
+            </form>
+            <p id="demo"></p>
+          </div>
+        </div>
+
+
+
+
+        <script> 
+      $(document).ready(function(){
+      
+      function todo()
+      {
+          setTimeout (function(){
+          window.location.replace("/books"); 
+          },3000);
+          // to change the location while clicking the button
+      }
+      $("#submit").click(function(e){
+          e.preventDefault();
+          // method in jQuery to stop the default action of selected element to occur.
+       
+          //         validating username and password
+       
+      if ($("#user").val()==""|| $("#password").val()=="")
+      {
+          $("p").html("<h5>Please provide a Valid username and Password</h5>")
+          $("p").css({"color": "red","font-size": "100%"});
+      }
+      //         when the username and password is empty,it must show a message like"enter the credentials.for this we are selecting the id names of user input and password input and
+      //         we are using .val(), an inbuilt method in jQuery to set/returns the value of an attribute to the selected elements.
+      // here it will get the value of the input box with these user names
+      
+          
+      else if ($("#user").val()=="admin" &&  $("#password").val()=="12345")
+      {
+          setTimeout(function()
+          {
+              $("p").html("<h5>Welcome To Your Personal Library</h5>")
+              $("p").css({"color": "green","font-size": "100%"});
+          });
+                
+          access (todo)
+      }
+      else{
+          $("p").html("<h5>Your username or Password does not match. Please verify and try again</h5>")
+          $("p").css({"color": "red","font-size": "50%"});
+      
+      }
+      function access(callback)
+      {
+          // alert("LOGIN Sucessfull");
+          callback()
+      }
+       });
+      
+      });
+      
+        </script>
+      </body>
+      </html>
+      
